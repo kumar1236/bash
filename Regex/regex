@@ -1,0 +1,101 @@
+
+
+1.What a regular expression?
+*Sequence of chracters that defines a search pattern.
+
+
+Literal Chracters
+
+ a , b , c , 1 , 2
+
+Meta Chracters
+-single :
+
+\d -> 0-9
+\w -> A-Z,a-z,0-9  \W (not a word chracter)
+\s -> Whitespace  \S (not whitespace )
+.  -> Any chracter what so ever
+
+-quantifiers :
+* - 0 or more
++ - 1 or more chracters
+? - 0 or 1
+{n} - no of chracters
+{min,max} - min and max chraters
+
+-position :
+^ - Begining
+$ - End
+\b -> Word Boundary
+
+
+Chracter Clases:
+
+ [abc] -  match a or b or c
+ [-.]  - match . or - (. inside a chracter class is literal)
+
+ Alternation:
+ (net|com) : matches net or com
+
+Capturing Groups:
+
+.* - Wilcard and very greedy
+
+.*? - ? with .* reduces the greediness of .*
+
+Groups of matched string can be captured using parenthasis.
+
+Mathed groups are referenced using below variables.
+$0 (complete string)
+$1 (First group, which is inside parantasis)
+$2 (second ") ... and so on
+
+
+Back References :
+
+Example for back references to capture words repeated
+\b(\w+)\s\1
+
+Groups of matched string can be captured using parenthasis.
+
+Mathed groups are referenced using below variables to match again within the regex.
+\0 (complete string)
+\1 (First group, which is inside parantasis)
+\2 (second ") ... and so on
+
+
+
+Lookarounds:
+Lookahead and Lookbehind:
+
+(?=foo)	Lookahead	Asserts that what immediately follows the current position in the string is foo
+(?<=foo)	Lookbehind	Asserts that what immediately precedes the current position in the string is foo
+(?!foo)	Negative Lookahead	Asserts that what immediately follows the current position in the string is not foo
+(?<!foo)	Negative Lookbehind	Asserts that what immediately precedes the current position in the string is not foo
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
