@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+#!/bin/bash
 # Check parameters
 if [ "$#" -ne 1 ]; then
      >&2 echo "Illegal number of parameters"
@@ -11,17 +12,11 @@ if [ ! -f "${1}" ]; then
     exit 1
 fi
 FILE="${1}"
-
 while read eid; do
   beforesync=`doveadm -f table mailbox status -u $eid messages '*' | wc -l`
   echo "Before Sync : $beforesync"
   echo -e "\nExecuting force sync.........."
   doveadm force-resync -u $eid '*'
-  if [  $? -ne 0 ]  # Excludes failed force sync accounts.
-  then
-    echo ${eid} > /tmp/failedforcesync.txt
-    continue
-  fi
   sleep 1
   echo -e "\n"
   aftersync=`doveadm -f table mailbox status -u $eid messages '*' | wc -l`
@@ -31,7 +26,7 @@ while read eid; do
   else
       echo "folder counts are not matching"
       echo "$eid" >> /var/tmp/folder-mismatch-uids.txt
-        ### 2nd Force-sync and Messages move
+      ### 2nd Force-sync and Messages move
       doveadm force-resync -u $eid '*'
       sleep 1
       echo -e "\n"
@@ -45,17 +40,13 @@ while read eid; do
       doveadm move -u $eid ${folder} mailbox ${i} all
       if [ $? -eq 0 ] && [ "$(doveadm -f table mailbox status -u $eid messages "${i}" | awk {'print $2'})" == '0' ] ; then
         echo "Removing folder ${i}"
-        doveadm mailbox delete -e -u $eid ${i} #Require mailboxes to be empty before deleting.
+        doveadm mailbox delete -u $eid ${i}
         result=1;
       fi
       done
-       echo -e "\n"
+      echo -e "\n"
        if [ $result -eq 1 ]; then
-        echo $eid >> Final-folder-lost-fix.csv
+       echo $eid >> Final-folder-lost-fix.csv
        fi
   fi
 done < ${FILE}
-
-
-
-
